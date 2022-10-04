@@ -1,0 +1,36 @@
+### Changelog
+
+{{#each releases}}
+  {{#if href}}
+    ##{{#unless major}}#{{/unless}} [{{title}}]({{href}})
+  {{else}}
+    ## {{title}}
+  {{/if}}
+
+  {{#if tag}}
+    > {{niceDate}}
+  {{/if}}
+
+  {{#if summary}}
+    {{summary}}
+  {{/if}}
+
+   {{! List commits with `Breaking change: ` somewhere in the message }}
+  {{#commit-list commits heading='### Breaking Changes' message='Breaking change'}}
+    - {{subject}} [`{{shorthash}}`]({{href}})
+  {{/commit-list}}
+
+  {{! List commits that add new features, but not those already listed above }}
+  {{#commit-list commits heading='### Features' message='(?=.*(feat|Feat))(?=.*Merged)' exclude='Breaking change'}}
+    - {{subject}} [`{{shorthash}}`]({{href}})
+  {{/commit-list}}
+
+    {{#commit-list commits heading='### Maintenance' message='(?=.*(maintenance|docs|refactor|perf|test))(?=.*Merged)' exclude='Breaking change'}}
+    - {{subject}} [`{{shorthash}}`]({{href}})
+  {{/commit-list}}
+
+  {{#commit-list commits heading='### Fixes' message="(?=.*fix)(?=.*Merged)" exclude='Breaking change'}}
+    - {{subject}} [`{{shorthash}}`]({{href}})
+  {{/commit-list}}
+
+{{/each}}
